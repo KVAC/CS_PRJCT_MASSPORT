@@ -12,10 +12,17 @@ public class SCAN {
 		ArrayList<Integer> ports = new ArrayList<Integer>();
 		ArrayList<String> addressCIDR = new ArrayList<String>();
 		ArrayList<String> address = new ArrayList<String>();
-
+		ArrayList<ScanThread> scanThreads = new ArrayList<>();
+		/*
+		 * 
+		 * 
+		 * -H=[94.75.0.0/16] -p=[25]
+		 */
 		// Аргументы
 		for (int i = 0; i < args.length; i++) {
-			System.out.println("Аргумент" + args[i]);
+			System.out.println("Аргумент#" + i + ": " + args[i]);
+		}
+		for (int i = 0; i < args.length; i++) {
 			// ПОРТЫ
 			if (args[i].toLowerCase().contains("-p".toLowerCase())) {
 				String portStringlower = args[i].toLowerCase();
@@ -67,6 +74,13 @@ public class SCAN {
 				new ScanThread(address.get(j), ports.get(j2)).start();
 			}
 		}
+
+		do {
+			while (scanThreads.size() > 10) {
+
+			}
+
+		} while (true);
 		//
 	}
 
