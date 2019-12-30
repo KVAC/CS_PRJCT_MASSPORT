@@ -8,10 +8,19 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project>
+		</project>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>io.github.fengyouchao</groupId>
+			<artifactId>sockslib</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
+
 		<dependency>
 			<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
 			<groupId>commons-net</groupId>
@@ -27,6 +36,13 @@
 	</dependencies>
 	<build>
 		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>${project.build.directory}</targetPath>
+				<includes>
+					<include>log4j.properties</include>
+				</includes>
+			</resource>
 			<resource>
 				<directory>docs/</directory>
 				<includes>

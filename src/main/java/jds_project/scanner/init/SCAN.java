@@ -1,14 +1,25 @@
 package jds_project.scanner.init;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 
+import jds_project.scanner.engine.HEADER_PROXY;
 import jds_project.scanner.engine.ScanThread;
+import sockslib.common.UsernamePasswordCredentials;
 
 public class SCAN {
+	public static boolean stop = false;
+
 	public static void main(String[] args) {
+		// TODO ADD AUTH
+		String username = "";
+		String password = "";
+
+		HEADER_PROXY.proxy.setCredentials(new UsernamePasswordCredentials(username, password));
+
 		ArrayList<Integer> ports = new ArrayList<Integer>();
 		ArrayList<String> addressCIDR = new ArrayList<String>();
 		ArrayList<String> address = new ArrayList<String>();
@@ -69,19 +80,47 @@ public class SCAN {
 		 * address.size(); j++) { // System.err.println("address: " + address.get(j)); }
 		 */
 		//
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				do {
+					for (int j = 0; j < scanThreads.size(); j++) {
+						ScanThread thread = scanThreads.get(j);
+						if (thread != null) {
+							State state = thread.getState();
+							if (state.equals(Thread.State.TERMINATED)) {
+								scanThreads.remove(thread);
+								System.out.println(scanThreads.size());
+								thread = null;
+								state = null;
+							}
+						}
+					}
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				} while (stop == false);
+			}
+		}).start();
+
 		for (int j = 0; j < address.size(); j++) {
 			for (int j2 = 0; j2 < ports.size(); j2++) {
-				new ScanThread(address.get(j), ports.get(j2)).start();
+				while (scanThreads.size() > 2000) {
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				ScanThread th = new ScanThread(address.get(j), ports.get(j2));
+				scanThreads.add(th);
+				th.start();
 			}
 		}
-
-		do {
-			while (scanThreads.size() > 10) {
-
-			}
-
-		} while (true);
-		//
+		stop = true;
 	}
 
 }

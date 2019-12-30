@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import sockslib.client.SocksSocket;
+
 public class ScanThread extends Thread implements Runnable {
 	private String HOST;
 	private int PORT;
@@ -30,20 +32,19 @@ public class ScanThread extends Thread implements Runnable {
 	}
 
 	private boolean checkPort(String host, int port) {
-		Socket scanSocket = new Socket();
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(this.getHOST(), this.getPORT());
-
+		Socket aaSocket = null;
 		try {
-			scanSocket.connect(inetSocketAddress, 5000);
+			aaSocket = new SocksSocket(HEADER_PROXY.proxy);
+			aaSocket.connect(new InetSocketAddress(this.getHOST(), this.getPORT()), 5000);
 		} catch (IOException e) {
 			try {
-				scanSocket.close();
+				aaSocket.close();
 			} catch (IOException e1) {
 			}
 			return false;
 		}
 		try {
-			scanSocket.close();
+			aaSocket.close();
 		} catch (IOException e) {
 		}
 		return true;
