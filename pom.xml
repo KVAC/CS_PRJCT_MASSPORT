@@ -5,22 +5,51 @@
 	<groupId>CS</groupId>
 	<artifactId>CS-scanner_massport</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<project>
-		</project>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>io.github.fengyouchao</groupId>
-			<artifactId>sockslib</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 
+
+		<!-- YAML -->
+		<dependency>
+			<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>2.10.3</version>
+		</dependency>
+		<dependency>
+			<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.10.3</version>
+		</dependency>
+		<!-- YAML -->
+
+		<dependency>
+			<groupId>me.tongfei</groupId>
+			<artifactId>progressbar</artifactId>
+			<version>0.5.5</version>
 		</dependency>
 
+
+		<dependency>
+			<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.12</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.mike10004</groupId>
+			<artifactId>fengyouchao-sockslib</artifactId>
+			<version>1.0.3</version> <!-- use latest version from Maven badge above -->
+		</dependency>
+
+		<!-- <dependency> <groupId>io.github.fengyouchao</groupId> <artifactId>sockslib</artifactId> 
+			<version>1.0.0-SNAPSHOT</version> </dependency> -->
 		<dependency>
 			<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
 			<groupId>commons-net</groupId>
@@ -54,24 +83,62 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>jds_project.scanner.init.SCAN</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
+						<id>build-a</id>
+						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>jds_project.scanner.init.RandomScan</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>MasScan_RandomScan.jar</finalName>
+						</configuration>
 					</execution>
+					<execution>
+						<id>build-b</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>jds_project.scanner.init.SCAN</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>MasScan_SCAN.jar</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Masscan-complete</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>jds_project.scanner.init.InitMasScan</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>MasScan_Complete.jar</finalName>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 		</plugins>
