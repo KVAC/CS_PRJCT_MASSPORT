@@ -54,7 +54,7 @@
 			<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
-			<version>3.6</version>
+			<version>3.9.0</version>
 		</dependency>
 		<dependency>
 			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
